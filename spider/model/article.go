@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-type SpiderItem struct {
+type Article struct {
 	gorm.Model
 	ArticleId int64  `json:"articleid" gorm:"type:bigint;column:articleid"`
 	Domain    string `json:"domain" gorm:"type:varchar(200);column:domain"`
@@ -32,7 +32,7 @@ type EsItem struct {
 	Category  string `json:"category" gorm:"column:category;default:'微段子'"`
 }
 
-func (item *SpiderItem) BeforeCreate(tx *gorm.DB) error {
+func (item *Article) BeforeCreate(tx *gorm.DB) error {
 	esData := EsItem{
 		ArticleId: item.ArticleId,
 		Domain:    item.Domain,

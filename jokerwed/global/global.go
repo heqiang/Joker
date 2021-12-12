@@ -1,8 +1,13 @@
 package global
 
-import "github.com/streadway/amqp"
+import (
+	"github.com/go-redis/redis/v8"
+	"gorm.io/gorm"
+	"jokerweb/config"
+)
 
 var (
-	MqConn *amqp.Connection
-	MqChan *amqp.Channel
+	Db   *gorm.DB
+	Conf *config.AppConfig
+	Rdb  *redis.Client
 )

@@ -20,7 +20,7 @@ func InitMysql() {
 		fmt.Printf("数据库打开失败,err:%s", err)
 		panic(err)
 	}
-	var spideritem model.SpiderItem
+	var spideritem model.Article
 	err = db.AutoMigrate(&spideritem)
 	if err != nil {
 		fmt.Println("数据库迁移失败")
