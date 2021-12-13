@@ -13,7 +13,7 @@ mysql:
   user: "root"
   password: 142212
   port: 3306
-  dbname: "web_app"
+  dbname: "jokeweb"
   max_conn: 200
   max_idle_conns: 10
 redis:
