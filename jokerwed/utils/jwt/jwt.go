@@ -3,7 +3,6 @@ package jwt
 import (
 	"errors"
 	"github.com/dgrijalva/jwt-go"
-	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"time"
 )
@@ -51,8 +50,4 @@ func ParseToken(tokenString string) (*MyClaims, error) {
 		return mc, nil
 	}
 	return nil, errors.New("invalid token")
-}
-
-func GetCurrentUserIndf(c *gin.Context) {
-	c.Get("CTXUSERIDKEY")
 }

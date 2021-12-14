@@ -2,24 +2,16 @@ package user
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/go-playground/validator/v10"
-	"go.uber.org/zap"
 	"jokerweb/aweb/controller"
-	"jokerweb/aweb/model"
 	"jokerweb/aweb/service/implements"
+	"jokerweb/model"
 	"jokerweb/utils"
 )
 
 func UserLogin(c *gin.Context) {
 	var u model.User
 	if err := c.ShouldBind(&u); err != nil {
-		errs, ok := err.(validator.ValidationErrors)
-		if ok {
-			utils.ResponseError(c, utils.CodeInvaildParam)
-			return
-		}
-		zap.L().Error("登录失败", zap.Error(err))
-		utils.ResponseErrorWithMsg(c, controller.RemoveTopStruct(errs.Translate(controller.Trans)), utils.CodeInvaildParam)
+		controller.HandleValidtorError(c, err)
 		return
 	}
 	if !store.Verify(u.CaptchaId, u.Captcha, true) {
@@ -41,14 +33,7 @@ func UserLogin(c *gin.Context) {
 func UserRegister(c *gin.Context) {
 	var p model.User
 	if err := c.ShouldBind(&p); err != nil {
-		errs, ok := err.(validator.ValidationErrors)
-		if !ok {
-			utils.ResponseError(c, utils.CodeInvaildParam)
-			return
-		}
-		//请求失败
-		zap.L().Error("用户注册 invaild param", zap.Error(err))
-		utils.ResponseErrorWithMsg(c, controller.RemoveTopStruct(errs.Translate(controller.Trans)), utils.CodeInvaildParam)
+		controller.HandleValidtorError(c, err)
 		return
 	}
 	if !store.Verify(p.CaptchaId, p.Captcha, true) {

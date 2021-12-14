@@ -21,7 +21,6 @@ type Article struct {
 }
 
 type EsItem struct {
-	gorm.Model
 	ArticleId int64  `json:"articleid" gorm:"type:bigint;column:articleid"`
 	Domain    string `json:"domain" gorm:"type:varchar(200);column:domain"`
 	Url       string `json:"url" gorm:"column:url"`

@@ -1,8 +1,9 @@
 package implements
 
 import (
+	"jokerweb/aweb/controller/article/articletype"
 	"jokerweb/aweb/dao"
-	"jokerweb/aweb/model"
+	"jokerweb/model"
 )
 
 type Article struct{}
@@ -10,7 +11,7 @@ type Article struct{}
 func (A *Article) PostArticle(article model.Article) error {
 	return dao.PostArticle(article)
 }
-func (A *Article) UpdateArticle(article model.Article) error {
+func (A *Article) UpdateArticle(article articletype.Article) error {
 	return dao.UpdateArticle(article)
 }
 func (A *Article) GetArticleByArticleId(articleId int64) (model.Article, error) {

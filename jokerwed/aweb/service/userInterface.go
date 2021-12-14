@@ -1,7 +1,7 @@
 package service
 
 import (
-	model2 "jokerweb/aweb/model"
+	model2 "jokerweb/model"
 )
 
 type UserInterface interface {

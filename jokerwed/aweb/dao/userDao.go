@@ -4,8 +4,8 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"errors"
-	"jokerweb/aweb/model"
 	"jokerweb/global"
+	"jokerweb/model"
 	"jokerweb/utils/jwt"
 )
 

@@ -2,9 +2,9 @@ package dao
 
 import (
 	"errors"
-	"jokerweb/aweb/model"
+	"jokerweb/aweb/controller/article/articletype"
 	"jokerweb/global"
-	"jokerweb/utils/jwt"
+	"jokerweb/model"
 	"jokerweb/utils/snowflake"
 	"time"
 )
@@ -15,40 +15,44 @@ const (
 )
 
 func PostArticle(article model.Article) error {
-	_, err := GetArticleByArticleId(article.ArticleId)
-	if err != nil {
-		art := model.Article{
-			ArticleId: snowflake.GetSnowId(),
-			Domain:    article.Domain,
-			Url:       article.Url,
-			Content:   article.Content,
-			PubTime:   time.Now().Format("2006-01-02 15:04:05"),
-			Category : article.Category,
-			UserId:
-		}
-		global.Db.Create(&art)
-	}
-	return errors.New(ArticleExist)
-}
-func UpdateArticle(article model.Article) error {
 	art := model.Article{
-		Title:   article.Title,
-		Content: article.Content,
+		ArticleId: snowflake.GetSnowId(),
+		Domain:    article.Domain,
+		Url:       article.Url,
+		Title:     article.Title,
+		Content:   article.Content,
+		PubTime:   time.Now().Format("2006-01-02 15:04:05"),
+		Category:  article.Category,
+		UserId:    article.UserId,
 	}
-	res := global.Db.Create(&art)
-	if res.RowsAffected == 0 {
-		return res.Error
+	tx := global.Db.Begin()
+	tx.Create(&art)
+	if tx.Error != nil {
+		tx.Rollback()
+		return tx.Error
 	}
+	tx.Commit()
+
+	return nil
+}
+func UpdateArticle(article articletype.Article) error {
+	tx := global.Db.Begin()
+	tx.Where("articleId=?", article.ArticleId).Save(&article)
+	if tx.Error != nil {
+		tx.Rollback()
+		return tx.Error
+	}
+	tx.Commit()
 	return nil
 
 }
 func GetArticleByArticleId(articleId int64) (model.Article, error) {
-	var article model.Article
-	res := global.Db.Where("articleid=?", articleId).First(&article)
+	var art model.Article
+	res := global.Db.Where("articleid=?", articleId).First(&art)
 	if res.RowsAffected == 0 {
-		return article, errors.New(ArticleNotExist)
+		return art, errors.New(ArticleNotExist)
 	}
-	return article, nil
+	return art, nil
 }
 func GetAllarticle() (allArticle []model.Article) {
 	allArticle = []model.Article{}

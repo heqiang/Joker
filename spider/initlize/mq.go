@@ -61,7 +61,7 @@ func InitMq() {
 }
 
 func InsertMysql(data []byte) {
-	spiderItem := model.SpiderItem{
+	spiderItem := model.Article{
 		ArticleId: utils.SnowFlake(),
 	}
 	err := json.Unmarshal(data, &spiderItem)
@@ -69,11 +69,13 @@ func InsertMysql(data []byte) {
 		fmt.Println("err:", err)
 		return
 	}
-	//fmt.Println(spiderItem)
+
 	tx := global.MySqlDb.Begin()
 	res := tx.Create(&spiderItem)
 	if res.RowsAffected < 1 {
+		tx.Rollback()
 		fmt.Println(res.Error.Error())
+		return
 	}
 	tx.Commit()
 }

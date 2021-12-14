@@ -2,7 +2,7 @@ package implements
 
 import (
 	dao2 "jokerweb/aweb/dao"
-	model2 "jokerweb/aweb/model"
+	model2 "jokerweb/model"
 	"jokerweb/utils/snowflake"
 )
 
