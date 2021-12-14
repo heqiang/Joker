@@ -2,7 +2,8 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
-	"jokerweb/controller/user"
+	"jokerweb/aweb/controller/article"
+	"jokerweb/aweb/controller/user"
 	"jokerweb/middlewares"
 )
 
@@ -14,6 +15,9 @@ func InitUserRouter(r *gin.RouterGroup) {
 		router.POST("login", user.UserLogin)
 		router.POST("register", user.UserRegister)
 		router.Use(middlewares.JWTAuthMiddleware())
-		router.GET("/index", user.GetIndex)
+		router.POST("postarticle", article.PostArticle)
+		router.POST("updatearticle", article.UpdateArticle)
+		router.GET("getarticlebyid", article.GetArticleById)
+		router.GET("getallarticle", article.GetAllArticle)
 	}
 }

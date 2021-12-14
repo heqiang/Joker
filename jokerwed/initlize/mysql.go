@@ -5,9 +5,9 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/schema"
+	model2 "jokerweb/aweb/model"
 	"jokerweb/config"
 	"jokerweb/global"
-	"jokerweb/model"
 )
 
 func InitMysql(conf *config.MysqlConfig) (err error) {
@@ -24,9 +24,9 @@ func InitMysql(conf *config.MysqlConfig) (err error) {
 		fmt.Printf("数据库打开失败,err:%s", err)
 		panic(err)
 	}
-	var article model.Article
-	var user model.User
-	var vote model.Vote
+	var article model2.Article
+	var user model2.User
+	var vote model2.Vote
 	err = db.AutoMigrate(&article, &user, &vote)
 	if err != nil {
 		fmt.Println("数据库迁移失败")

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
-	"jokerweb/controller"
+	controller2 "jokerweb/aweb/controller"
 	"jokerweb/global"
 	"jokerweb/initlize"
 	"log"
@@ -33,7 +33,7 @@ func main() {
 		fmt.Println("mysql初始化错误")
 		return
 	}
-	if err := controller.InitTrans("zh"); err != nil {
+	if err := controller2.InitTrans("zh"); err != nil {
 		fmt.Println("翻译器初始化失败")
 		return
 	}

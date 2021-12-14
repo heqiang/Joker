@@ -4,9 +4,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-playground/validator/v10"
 	"go.uber.org/zap"
-	"jokerweb/controller"
-	"jokerweb/model"
-	"jokerweb/service/implements"
+	"jokerweb/aweb/controller"
+	"jokerweb/aweb/model"
+	"jokerweb/aweb/service/implements"
 	"jokerweb/utils"
 )
 
@@ -49,6 +49,10 @@ func UserRegister(c *gin.Context) {
 		//请求失败
 		zap.L().Error("用户注册 invaild param", zap.Error(err))
 		utils.ResponseErrorWithMsg(c, controller.RemoveTopStruct(errs.Translate(controller.Trans)), utils.CodeInvaildParam)
+		return
+	}
+	if !store.Verify(p.CaptchaId, p.Captcha, true) {
+		utils.ResponseSuccess(c, utils.CodeCaptchaError)
 		return
 	}
 	var user implements.User

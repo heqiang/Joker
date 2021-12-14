@@ -4,8 +4,8 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"errors"
+	"jokerweb/aweb/model"
 	"jokerweb/global"
-	"jokerweb/model"
 	"jokerweb/utils/jwt"
 )
 
@@ -53,6 +53,6 @@ func InsertUser(userinfo *model.User) error {
 
 func QueryByUserId(id int64) (user *model.User) {
 	user = new(model.User)
-	global.Db.Where("user_id=?", id).Take(&user)
+	global.Db.Where("userid=?", id).Take(&user)
 	return
 }
