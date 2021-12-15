@@ -8,6 +8,13 @@ import (
 	"jokerweb/utils"
 )
 
+// UserLogin
+// @Tags 用户
+// @Summary 用户登录
+// @title 用户登录
+// @Param data json model.User true "请求参数体"
+// @Success 200 object utils.ResponseData "请求成功"
+// @Router /v1/user/login  [post]
 func UserLogin(c *gin.Context) {
 	var u model.User
 	if err := c.ShouldBind(&u); err != nil {
