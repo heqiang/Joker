@@ -17,7 +17,7 @@ func InitUserRouter(r *gin.RouterGroup) {
 		router.Use(middlewares.JWTAuthMiddleware())
 		router.POST("postarticle", article.PostArticle)
 		router.POST("updatearticle", article.UpdateArticle)
-		router.GET("getarticlebyid", article.GetArticleById)
+		router.GET("getarticlebyid/:articleId", article.GetArticleById)
 		router.GET("getallarticle", article.GetAllArticle)
 	}
 }

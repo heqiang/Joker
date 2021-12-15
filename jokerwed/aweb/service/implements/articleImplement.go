@@ -14,7 +14,7 @@ func (A *Article) PostArticle(article model.Article) error {
 func (A *Article) UpdateArticle(article articletype.Article) error {
 	return dao.UpdateArticle(article)
 }
-func (A *Article) GetArticleByArticleId(articleId int64) (model.Article, error) {
+func (A *Article) GetArticleByArticleId(articleId string) (model.Article, error) {
 	return dao.GetArticleByArticleId(articleId)
 }
 

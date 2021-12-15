@@ -9,10 +9,7 @@ import (
 	"time"
 )
 
-const (
-	ArticleNotExist = "该文章不存在"
-	ArticleExist    = "文章已存在"
-)
+var ArticleNotExist = errors.New("文章不存在")
 
 func PostArticle(article model.Article) error {
 	art := model.Article{
@@ -46,11 +43,11 @@ func UpdateArticle(article articletype.Article) error {
 	return nil
 
 }
-func GetArticleByArticleId(articleId int64) (model.Article, error) {
+func GetArticleByArticleId(articleId string) (model.Article, error) {
 	var art model.Article
 	res := global.Db.Where("articleid=?", articleId).First(&art)
 	if res.RowsAffected == 0 {
-		return art, errors.New(ArticleNotExist)
+		return art, ArticleNotExist
 	}
 	return art, nil
 }

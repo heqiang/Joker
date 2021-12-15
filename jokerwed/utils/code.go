@@ -14,6 +14,7 @@ const (
 	CodeInvaildAuth
 	CodeNeedLogin
 	CodeCaptchaError
+	CodeArticleNotExist
 )
 
 var codeMsgMap = map[ResCode]string{
@@ -27,6 +28,7 @@ var codeMsgMap = map[ResCode]string{
 	CodeInvaildAuth:               "token有误",
 	CodeNeedLogin:                 "请登录",
 	CodeCaptchaError:              "验证码错误",
+	CodeArticleNotExist:           "文章不存在",
 }
 
 func (c ResCode) Msg() string {

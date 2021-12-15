@@ -48,9 +48,22 @@ func UpdateArticle(c *gin.Context) {
 }
 
 func GetArticleById(c *gin.Context) {
-
+	articleId := c.Param("articleId")
+	if articleId == "" {
+		utils.ResponseSuccessWithMsg(c, utils.CodeInvaildParam, "请输入正确的文章id")
+		return
+	}
+	var art implements.Article
+	article, err := art.GetArticleByArticleId(articleId)
+	if err != nil {
+		utils.ResponseError(c, utils.CodeArticleNotExist)
+		return
+	}
+	utils.ResponseSuccessWithMsg(c, utils.CodeSuccess, article)
 }
 
 func GetAllArticle(c *gin.Context) {
-
+	var art implements.Article
+	allArticle := art.GetAllarticle()
+	utils.ResponseSuccessWithMsg(c, utils.CodeSuccess, allArticle)
 }
