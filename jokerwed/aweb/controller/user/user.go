@@ -12,8 +12,8 @@ import (
 // @Tags 用户
 // @Summary 用户登录
 // @title 用户登录
-// @Param data json model.User true "请求参数体"
-// @Success 200 object utils.ResponseData "请求成功"
+// @Param login body  swag.User true "请求参数"
+// @Success 200 {string} json '{ "code": 1000, "msg": "success","data":"xxxx"}'
 // @Router /v1/user/login  [post]
 func UserLogin(c *gin.Context) {
 	var u model.User
@@ -37,6 +37,13 @@ func UserLogin(c *gin.Context) {
 	utils.ResponseSuccessWithMsg(c, utils.CodeSuccess, token)
 }
 
+// UserRegister
+// @Tags 用户
+// @Summary 用户注册
+// @title 用户注册
+// @Param register body  swag.User true "请求参数"
+// @Success 200 {string} json '{ "code": 1000, "msg": "success"}'
+// @Router /v1/user/register  [post]
 func UserRegister(c *gin.Context) {
 	var p model.User
 	if err := c.ShouldBind(&p); err != nil {

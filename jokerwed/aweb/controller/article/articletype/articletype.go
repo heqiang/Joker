@@ -44,3 +44,8 @@ func (item *Article) AfterUpdate(tx *gorm.DB) (err error) {
 	}
 	return nil
 }
+
+type ArticlParam struct {
+	Title   string `json:"title" gorm:"column:title" comment:"文章标题" binding:"required" `
+	Content string `json:"content" gorm:"column:content;type:text" comment:"文章内容" binding:"required" `
+}

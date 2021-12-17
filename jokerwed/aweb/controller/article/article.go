@@ -10,6 +10,14 @@ import (
 	"jokerweb/utils"
 )
 
+// PostArticle
+// @Tags 文章
+// @Summary 发布文章
+// @title 发布文章
+// @Security ApiKeyAuth
+// @Param registerparam body  articletype.ArticlParam true "请求参数"
+// @Success 200 {string} json '{ "code": 1000, "msg": "success"}'
+// @Router /v1/user/postarticle  [post]
 func PostArticle(c *gin.Context) {
 	var article model.Article
 	if err := c.ShouldBind(&article); err != nil {
@@ -31,7 +39,14 @@ func PostArticle(c *gin.Context) {
 	utils.ResponseSuccess(c, utils.CodeSuccess)
 }
 
-// UpdateArticle 更新mysql的同时更新es
+// UpdateArticle
+// @Tags 文章
+// @Summary 文章更新
+// @title 文章更新
+// @Security ApiKeyAuth
+// @Param  updatearticle  body  articletype.ArticlParam true "文章更新参数"
+// @Success 200 {string} json '{"code": 1000, "msg": "success"}'
+// @Router /v1/user/updatearticle  [post]
 func UpdateArticle(c *gin.Context) {
 	var article articletype.Article
 	if err := c.ShouldBind(&article); err != nil {
@@ -47,6 +62,14 @@ func UpdateArticle(c *gin.Context) {
 	utils.ResponseSuccess(c, utils.CodeSuccess)
 }
 
+// GetArticleById
+// @Tags 文章
+// @Summary 通过id获取文章
+// @title 通过id获取文章
+// @Security ApiKeyAuth
+// @Param articleId path string true "articleId"
+// @Success 200 {string} json '{ "code": 1000, "msg": "success"}'
+// @Router /v1/user/getarticlebyid/{articleId}  [get]
 func GetArticleById(c *gin.Context) {
 	articleId := c.Param("articleId")
 	if articleId == "" {
@@ -62,6 +85,13 @@ func GetArticleById(c *gin.Context) {
 	utils.ResponseSuccessWithMsg(c, utils.CodeSuccess, article)
 }
 
+// GetAllArticle
+// @Tags 文章
+// @Summary 获取所有的文章
+// @title 获取所有的文章
+// @Security ApiKeyAuth
+// @Success 200 {string} json '{"code": 1000, "msg": "success"}'
+// @Router /v1/user/getallarticle  [get]
 func GetAllArticle(c *gin.Context) {
 	var art implements.Article
 	allArticle := art.GetAllarticle()
