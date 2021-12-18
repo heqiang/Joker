@@ -2,6 +2,7 @@ package dao
 
 import (
 	"errors"
+	"gorm.io/gorm"
 	"jokerweb/aweb/controller/article/articletype"
 	"jokerweb/global"
 	"jokerweb/model"
@@ -51,8 +52,14 @@ func GetArticleByArticleId(articleId string) (model.Article, error) {
 	}
 	return art, nil
 }
-func GetAllarticle() (allArticle []model.Article) {
+func GetAllarticle(page, size int) (allArticle []model.Article, total int, err error) {
 	allArticle = []model.Article{}
-	global.Db.Find(&allArticle)
+	res := global.Db.Offset(page).Limit(size).Find(&allArticle)
+	if errors.Is(res.Error, gorm.ErrRecordNotFound) {
+		err = errors.New("暂时没有数据")
+		return
+	}
+	var articleTotal model.Article
+	total = int(global.Db.Find(&articleTotal).RowsAffected)
 	return
 }

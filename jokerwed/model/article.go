@@ -35,9 +35,8 @@ type Vote struct {
 
 // ParamPostList 分页
 type ParamPostList struct {
-	Page  int64  `json:"page" form:"page"`
-	Size  int64  `json:"size"  form:"size"`
-	Order string `json:"order" form:"order"`
+	Total int         `json:"total"`
+	Data  interface{} `json:"data" form:"data"`
 }
 
 type EsItem struct {

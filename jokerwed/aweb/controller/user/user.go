@@ -13,7 +13,7 @@ import (
 // @Summary 用户登录
 // @title 用户登录
 // @Param login body  swag.User true "请求参数"
-// @Success 200 {string} json '{ "code": 1000, "msg": "success","data":"xxxx"}'
+// @Success 200 {object} utils.ResponseData "{'code':200,'data':null,'msg':''}"
 // @Router /v1/user/login  [post]
 func UserLogin(c *gin.Context) {
 	var u model.User
@@ -42,7 +42,7 @@ func UserLogin(c *gin.Context) {
 // @Summary 用户注册
 // @title 用户注册
 // @Param register body  swag.User true "请求参数"
-// @Success 200 {string} json '{ "code": 1000, "msg": "success"}'
+// @Success 200 {object} utils.ResponseData "{'code':200,'data':null,'msg':''}"
 // @Router /v1/user/register  [post]
 func UserRegister(c *gin.Context) {
 	var p model.User

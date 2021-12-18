@@ -18,6 +18,6 @@ func (A *Article) GetArticleByArticleId(articleId string) (model.Article, error)
 	return dao.GetArticleByArticleId(articleId)
 }
 
-func (A *Article) GetAllarticle() []model.Article {
-	return dao.GetAllarticle()
+func (A *Article) GetAllarticle(page, size int) ([]model.Article, int, error) {
+	return dao.GetAllarticle(page, size)
 }

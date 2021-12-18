@@ -8,6 +8,7 @@ import (
 	"jokerweb/middlewares"
 	"jokerweb/model"
 	"jokerweb/utils"
+	"strconv"
 )
 
 // PostArticle
@@ -16,7 +17,7 @@ import (
 // @title 发布文章
 // @Security ApiKeyAuth
 // @Param registerparam body  articletype.ArticlParam true "请求参数"
-// @Success 200 {string} json '{ "code": 1000, "msg": "success"}'
+// @Success 200 {object} utils.ResponseData "{'code':200,'data':null,'msg':''}"
 // @Router /v1/user/postarticle  [post]
 func PostArticle(c *gin.Context) {
 	var article model.Article
@@ -45,7 +46,7 @@ func PostArticle(c *gin.Context) {
 // @title 文章更新
 // @Security ApiKeyAuth
 // @Param  updatearticle  body  articletype.ArticlParam true "文章更新参数"
-// @Success 200 {string} json '{"code": 1000, "msg": "success"}'
+// @Success 200 {object} utils.ResponseData "{'code':200,'data':null,'msg':''}"
 // @Router /v1/user/updatearticle  [post]
 func UpdateArticle(c *gin.Context) {
 	var article articletype.Article
@@ -68,7 +69,7 @@ func UpdateArticle(c *gin.Context) {
 // @title 通过id获取文章
 // @Security ApiKeyAuth
 // @Param articleId path string true "articleId"
-// @Success 200 {string} json '{ "code": 1000, "msg": "success"}'
+// @Success 200 {object} utils.ResponseData "{'code':200,'data':null,'msg':''}"
 // @Router /v1/user/getarticlebyid/{articleId}  [get]
 func GetArticleById(c *gin.Context) {
 	articleId := c.Param("articleId")
@@ -90,10 +91,32 @@ func GetArticleById(c *gin.Context) {
 // @Summary 获取所有的文章
 // @title 获取所有的文章
 // @Security ApiKeyAuth
-// @Success 200 {string} json '{"code": 1000, "msg": "success"}'
+// @Param page query string false "页数"
+// @Param size query string false "size"
+// @Success 200 {object} utils.ResponseData "{'code':200,'data':null,'msg':''}"
 // @Router /v1/user/getallarticle  [get]
 func GetAllArticle(c *gin.Context) {
+	page, _ := strconv.Atoi(c.Query("page"))
+	if page <= 0 {
+		page = 1
+	}
+	size, _ := strconv.Atoi(c.Query("size"))
+	switch {
+	case size > 100:
+		size = 100
+	case size <= 0:
+		size = 10
+	}
+	offset := (page - 1) * size
 	var art implements.Article
-	allArticle := art.GetAllarticle()
-	utils.ResponseSuccessWithMsg(c, utils.CodeSuccess, allArticle)
+	allArticle, total, err := art.GetAllarticle(offset, size)
+	if err != nil {
+		utils.ResponseError(c, utils.CodeServerBusy)
+		return
+	}
+	paginationQ := &model.ParamPostList{
+		Total: total,
+		Data:  allArticle,
+	}
+	utils.ResponseSuccessWithMsg(c, utils.CodeSuccess, paginationQ)
 }

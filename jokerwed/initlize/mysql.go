@@ -20,7 +20,7 @@ func InitMysql(conf *config.MysqlConfig) (err error) {
 		NamingStrategy: schema.NamingStrategy{
 			SingularTable: true,
 		},
-		Logger: logger.Default.LogMode(logger.Info),
+		Logger: logger.Default.LogMode(logger.Warn),
 	})
 	if err != nil {
 		fmt.Printf("数据库打开失败,err:%s", err)
