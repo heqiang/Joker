@@ -109,7 +109,7 @@ func GetAllArticle(c *gin.Context) {
 	}
 	offset := (page - 1) * size
 	var art implements.Article
-	allArticle, total, err := art.GetAllarticle(offset, size)
+	allArticle, total, err := art.GetAllArticle(offset, size)
 	if err != nil {
 		utils.ResponseError(c, utils.CodeServerBusy)
 		return
@@ -119,4 +119,23 @@ func GetAllArticle(c *gin.Context) {
 		Data:  allArticle,
 	}
 	utils.ResponseSuccessWithMsg(c, utils.CodeSuccess, paginationQ)
+}
+
+func VoteArticle(c *gin.Context) {
+	var vote model.Vote
+	if err := c.ShouldBindJSON(&vote); err != nil {
+		controller.HandleValidtorError(c, err)
+		return
+	}
+	userId, err := middlewares.GetCurrentUser(c)
+	if err != nil {
+		utils.ResponseError(c, utils.CodeNeedAuth)
+		return
+	}
+	var art implements.Article
+	err = art.VoteArticle(vote, userId)
+	if err != nil {
+		utils.ResponseError(c, utils.CodeServerBusy)
+	}
+	utils.ResponseSuccess(c, utils.CodeSuccess)
 }

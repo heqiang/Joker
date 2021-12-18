@@ -28,8 +28,7 @@ func InitMysql(conf *config.MysqlConfig) (err error) {
 	}
 	var article model.Article
 	var user model.User
-	var vote model.Vote
-	err = db.AutoMigrate(&article, &user, &vote)
+	err = db.AutoMigrate(&article, &user)
 	if err != nil {
 		fmt.Println("数据库迁移失败")
 		return

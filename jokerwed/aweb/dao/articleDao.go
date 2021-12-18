@@ -1,13 +1,21 @@
 package dao
 
 import (
+	"context"
 	"errors"
+	"fmt"
 	"gorm.io/gorm"
 	"jokerweb/aweb/controller/article/articletype"
 	"jokerweb/global"
 	"jokerweb/model"
 	"jokerweb/utils/snowflake"
+	"strconv"
 	"time"
+)
+
+const (
+	VoteArticleScore     = "joker:article:score"
+	VoteArticleDirection = "joker:article:direction"
 )
 
 var ArticleNotExist = errors.New("文章不存在")
@@ -62,4 +70,27 @@ func GetAllarticle(page, size int) (allArticle []model.Article, total int, err e
 	var articleTotal model.Article
 	total = int(global.Db.Find(&articleTotal).RowsAffected)
 	return
+}
+func VoteArticle(vote model.Vote, userId int64) error {
+	var ctx context.Context
+	articleId := strconv.Itoa(int(vote.ArticleId))
+	//获取该用户给这篇文章的投票情况
+	voteValue := global.Rdb.ZScore(ctx, VoteArticleDirection+articleId, strconv.FormatInt(userId, 10)).Val()
+	if voteValue == vote.Direction {
+		return nil
+	}
+	var voteDir float64
+	//判断是点赞还是取消点赞
+	if voteValue > vote.Direction {
+		voteDir = 1
+	} else {
+		voteDir = -1
+	}
+	fmt.Println(voteDir)
+	//更新该用户对该篇文章的投票行为
+	//res := global.Rdb.ZAdd(ctx, VoteArticleDirection+articleId, &redis.Z{
+	//	Score:  voteValue,
+	//	Member: userId,
+	//}).Val()
+	return nil
 }

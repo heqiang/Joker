@@ -18,6 +18,10 @@ func (A *Article) GetArticleByArticleId(articleId string) (model.Article, error)
 	return dao.GetArticleByArticleId(articleId)
 }
 
-func (A *Article) GetAllarticle(page, size int) ([]model.Article, int, error) {
+func (A *Article) GetAllArticle(page, size int) ([]model.Article, int, error) {
 	return dao.GetAllarticle(page, size)
+}
+
+func (A *Article) VoteArticle(vote model.Vote, userId int64) error {
+	return dao.VoteArticle(vote, userId)
 }

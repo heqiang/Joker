@@ -19,5 +19,6 @@ func InitUserRouter(r *gin.RouterGroup) {
 		router.POST("updatearticle", article.UpdateArticle)
 		router.GET("getarticlebyid/:articleId", article.GetArticleById)
 		router.GET("getallarticle", article.GetAllArticle)
+		router.POST("voteArticle", article.VoteArticle)
 	}
 }

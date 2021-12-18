@@ -45,11 +45,11 @@ func main() {
 		fmt.Println("翻译器初始化失败")
 		return
 	}
-	//err = initlize.InitRedis(global.Conf.RedisConfig)
-	//if err != nil {
-	//	fmt.Println("redis初始化错误")
-	//	return
-	//}
+	err = initlize.InitRedis(global.Conf.RedisConfig)
+	if err != nil {
+		fmt.Println("redis初始化错误")
+		return
+	}
 
 	//开启服务
 	r := initlize.InitRouter()

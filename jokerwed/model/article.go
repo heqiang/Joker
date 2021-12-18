@@ -20,6 +20,7 @@ type Article struct {
 	ClickNum  int    `json:"clicknum" gorm:"column:clicknum;default:0" comment:"文章点击数"`
 	Category  string `json:"category" gorm:"column:category;default:'微段子'"`
 	UserId    int64  `json:"user_id" gorm:"type:bigint;column:userid"`
+	VoteNum   int    `json:"votenum" gorm:"type:int;column:votenum;default 0"`
 }
 
 func (article *Article) TableName() string {
@@ -28,9 +29,8 @@ func (article *Article) TableName() string {
 
 // Vote 点赞
 type Vote struct {
-	gorm.Model
-	ArticleId int64 `json:"articleid,string" comment:"文章的id"`
-	Direction int   `json:"direction,string" binding:"oneof=1 0 -1" comment:"1 赞成 0 取消赞成或者反对 -1反对 "`
+	ArticleId int64   `json:"articleid,string" comment:"文章的id"`
+	Direction float64 `json:"direction,string" binding:"oneof=1 0 -1" comment:"1 赞成 0 取消赞成或者反对 -1反对 "`
 }
 
 // ParamPostList 分页
