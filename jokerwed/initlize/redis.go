@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/go-redis/redis/v8"
 	"jokerweb/config"
+	"jokerweb/global"
 	"time"
 )
 
@@ -20,9 +21,8 @@ func InitRedis(conf *config.RedisConfig) (err error) {
 	defer cancel()
 
 	_, err = rdb.Ping(ctx).Result()
-	if err != nil {
-		return err
-	}
-	return nil
+	global.Rdb = rdb
+
+	return err
 
 }

@@ -14,11 +14,13 @@ func InitUserRouter(r *gin.RouterGroup) {
 	{
 		router.POST("login", user.UserLogin)
 		router.POST("register", user.UserRegister)
-		//router.Use(middlewares.JWTAuthMiddleware())
+		router.Use(middlewares.JWTAuthMiddleware())
 		router.POST("postarticle", article.PostArticle)
 		router.POST("updatearticle", article.UpdateArticle)
 		router.GET("getarticlebyid/:articleId", article.GetArticleById)
 		router.GET("getallarticle", article.GetAllArticle)
 		router.POST("voteArticle", article.VoteArticle)
+		router.POST("comment", article.VoteArticle)
+
 	}
 }

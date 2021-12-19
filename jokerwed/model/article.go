@@ -30,7 +30,7 @@ func (article *Article) TableName() string {
 // Vote 点赞
 type Vote struct {
 	ArticleId int64   `json:"articleid,string" comment:"文章的id"`
-	Direction float64 `json:"direction,string" binding:"oneof=1 0 -1" comment:"1 赞成 0 取消赞成或者反对 -1反对 "`
+	Direction float64 `json:"direction,string" comment:"1赞成 0 取消点赞"`
 }
 
 // ParamPostList 分页

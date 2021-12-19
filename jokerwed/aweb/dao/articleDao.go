@@ -3,7 +3,7 @@ package dao
 import (
 	"context"
 	"errors"
-	"fmt"
+	"github.com/go-redis/redis/v8"
 	"gorm.io/gorm"
 	"jokerweb/aweb/controller/article/articletype"
 	"jokerweb/global"
@@ -72,25 +72,25 @@ func GetAllarticle(page, size int) (allArticle []model.Article, total int, err e
 	return
 }
 func VoteArticle(vote model.Vote, userId int64) error {
-	var ctx context.Context
+	var article model.Article
+	ctx := context.Background()
 	articleId := strconv.Itoa(int(vote.ArticleId))
-	//获取该用户给这篇文章的投票情况
-	voteValue := global.Rdb.ZScore(ctx, VoteArticleDirection+articleId, strconv.FormatInt(userId, 10)).Val()
-	if voteValue == vote.Direction {
+
+	//获取该用户给这篇文章的点赞情况 只能是1 或者是0
+	res := global.Rdb.ZScore(ctx, VoteArticleDirection+articleId, strconv.FormatInt(userId, 10)).Val()
+	if res != 0 {
+		global.Rdb.ZRem(ctx, VoteArticleDirection+articleId, strconv.FormatInt(userId, 10))
+		global.Db.Where("articleid=?", vote.ArticleId).Take(&article)
+		article.VoteNum -= 1
+		global.Db.Save(&article)
 		return nil
 	}
-	var voteDir float64
-	//判断是点赞还是取消点赞
-	if voteValue > vote.Direction {
-		voteDir = 1
-	} else {
-		voteDir = -1
-	}
-	fmt.Println(voteDir)
-	//更新该用户对该篇文章的投票行为
-	//res := global.Rdb.ZAdd(ctx, VoteArticleDirection+articleId, &redis.Z{
-	//	Score:  voteValue,
-	//	Member: userId,
-	//}).Val()
+	global.Rdb.ZAdd(ctx, VoteArticleDirection+articleId, &redis.Z{
+		Score:  vote.Direction,
+		Member: userId,
+	})
+	global.Db.Where("articleid=?", vote.ArticleId).Take(&article)
+	article.VoteNum += 1
+	global.Db.Save(&article)
 	return nil
 }

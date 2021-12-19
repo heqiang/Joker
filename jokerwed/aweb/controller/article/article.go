@@ -139,3 +139,8 @@ func VoteArticle(c *gin.Context) {
 	}
 	utils.ResponseSuccess(c, utils.CodeSuccess)
 }
+
+// CommentArticle 评论功能
+func CommentArticle(c *gin.Context) {
+
+}
