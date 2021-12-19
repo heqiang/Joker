@@ -14,7 +14,6 @@ import (
 )
 
 const (
-	VoteArticleScore     = "joker:article:score"
 	VoteArticleDirection = "joker:article:direction"
 )
 
@@ -23,8 +22,6 @@ var ArticleNotExist = errors.New("文章不存在")
 func PostArticle(article model.Article) error {
 	art := model.Article{
 		ArticleId: snowflake.GetSnowId(),
-		Domain:    article.Domain,
-		Url:       article.Url,
 		Title:     article.Title,
 		Content:   article.Content,
 		PubTime:   time.Now().Format("2006-01-02 15:04:05"),

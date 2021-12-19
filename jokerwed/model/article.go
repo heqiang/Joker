@@ -11,26 +11,24 @@ import (
 // Article 文章表
 type Article struct {
 	gorm.Model
-	ArticleId int64  `json:"articleid" gorm:"type:bigint;column:articleid" comment:"文章id"`
-	Domain    string `json:"domain" gorm:"type:varchar(200);column:domain;default:'www.joker.com'" comment:"域名"`
-	Url       string `json:"url" gorm:"column:url;default:'https://www.joker.com'" comment:"文章url"`
-	Title     string `json:"title" gorm:"column:title" comment:"文章标题" binding:"required"`
-	Content   string `json:"content" gorm:"column:content;type:text" comment:"文章内容" binding:"required"`
-	PubTime   string `gorm:"column:pubtime" comment:"文章发布时间"`
-	ClickNum  int    `json:"clicknum" gorm:"column:clicknum;default:0" comment:"文章点击数"`
+	ArticleId int64  `json:"articleid" gorm:"type:bigint;column:articleid;comment:'文章id'" `
+	Title     string `json:"title" gorm:"column:title;comment:'文章标题'"  binding:"required"`
+	Content   string `json:"content" gorm:"column:content;type:text; comment:'文章内容'" binding:"required"`
+	PubTime   string `json:"pub_time" gorm:"column:pubtime;comment:'文章发布时间'"`
+	ClickNum  int    `json:"clicknum" gorm:"column:clicknum;default:0;comment:'文章点击量'" `
 	Category  string `json:"category" gorm:"column:category;default:'微段子'"`
-	UserId    int64  `json:"user_id" gorm:"type:bigint;column:userid"`
-	VoteNum   int    `json:"votenum" gorm:"type:int;column:votenum;default 0"`
+	UserId    int64  `json:"user_id" gorm:"type:bigint;column:userid;comment:'用户id'"`
+	VoteNum   int    `json:"votenum" gorm:"type:int;column:votenum;default 0;comment:'文章点赞量'"`
 }
 
-func (article *Article) TableName() string {
+func (item *Article) TableName() string {
 	return "article"
 }
 
 // Vote 点赞
 type Vote struct {
-	ArticleId int64   `json:"articleid,string" comment:"文章的id"`
-	Direction float64 `json:"direction,string" comment:"1赞成 0 取消点赞"`
+	ArticleId int64   `json:"articleid,string" comment:"文章的id" binging:"required"`
+	Direction float64 `json:"direction,string" comment:"1赞成 0 取消点赞" binging:"required"`
 }
 
 // ParamPostList 分页

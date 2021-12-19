@@ -121,6 +121,14 @@ func GetAllArticle(c *gin.Context) {
 	utils.ResponseSuccessWithMsg(c, utils.CodeSuccess, paginationQ)
 }
 
+// VoteArticle
+// @Tags 文章
+// @Summary 文章点赞
+// @title 文章点赞
+// @Security ApiKeyAuth
+// @Param vote body model.Vote true "请求参数"
+// @Success 200 {object} utils.ResponseData "{'code':200,'data':null,'msg':''}"
+// @Router /v1/user/voteArticle  [post]
 func VoteArticle(c *gin.Context) {
 	var vote model.Vote
 	if err := c.ShouldBindJSON(&vote); err != nil {
@@ -138,9 +146,4 @@ func VoteArticle(c *gin.Context) {
 		utils.ResponseError(c, utils.CodeServerBusy)
 	}
 	utils.ResponseSuccess(c, utils.CodeSuccess)
-}
-
-// CommentArticle 评论功能
-func CommentArticle(c *gin.Context) {
-
 }
