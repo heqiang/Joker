@@ -3,7 +3,6 @@ package router
 import (
 	"github.com/gin-gonic/gin"
 	"jokerweb/aweb/controller/article"
-	"jokerweb/aweb/controller/comment"
 	"jokerweb/aweb/controller/user"
 	"jokerweb/middlewares"
 )
@@ -21,7 +20,7 @@ func InitUserRouter(r *gin.RouterGroup) {
 		router.GET("getarticlebyid/:articleId", article.GetArticleById)
 		router.GET("getallarticle", article.GetAllArticle)
 		router.POST("voteArticle", article.VoteArticle)
-		router.POST("comment", comment.Comment)
+		router.POST("comment/:level", article.Comment)
 
 	}
 }

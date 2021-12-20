@@ -3,6 +3,7 @@ package dao
 import (
 	"context"
 	"errors"
+	"fmt"
 	"github.com/go-redis/redis/v8"
 	"gorm.io/gorm"
 	"jokerweb/aweb/controller/article/articletype"
@@ -28,14 +29,11 @@ func PostArticle(article model.Article) error {
 		Category:  article.Category,
 		UserId:    article.UserId,
 	}
-	tx := global.Db.Begin()
-	tx.Create(&art)
-	if tx.Error != nil {
-		tx.Rollback()
-		return tx.Error
+	a := &art
+	fmt.Println(a)
+	if res := global.Db.Create(&art); res.Error != nil {
+		return res.Error
 	}
-	tx.Commit()
-
 	return nil
 }
 func UpdateArticle(article articletype.Article) error {
@@ -89,5 +87,43 @@ func VoteArticle(vote model.Vote, userId int64) error {
 	global.Db.Where("articleid=?", vote.ArticleId).Take(&article)
 	article.VoteNum += 1
 	global.Db.Save(&article)
+	return nil
+}
+
+func CommentArticle(param articletype.CommentArticleParam, userId int64) error {
+	var comment model.ArticleComment
+	comment.CommentId = snowflake.GetSnowId()
+	comment.CommentLevel = 1
+	comment.ArticleId = param.ArticleId
+	comment.UserId = userId
+	comment.Content = param.Content
+	comment.Statu = 1
+	res := global.Db.Create(&comment)
+	if res.RowsAffected == 0 {
+		return res.Error
+	}
+	return nil
+}
+
+func CommentToComment(param articletype.CommentToCommentParam, userId int64) error {
+	var comment model.ArticleComment
+	global.Db.Where("commentid=?", param.ReplayCommentId).Take(&comment)
+	var newComment model.ArticleComment
+	if comment.CommentLevel == 1 {
+		newComment.ParentCommentId = comment.CommentId
+	} else {
+		newComment.ParentCommentId = comment.ParentCommentId
+	}
+	newComment.CommentId = snowflake.GetSnowId()
+	newComment.ArticleId = param.ArticleId
+	newComment.UserId = userId
+	newComment.CommentLevel = 2
+	newComment.ReplayCommentId = param.ReplayCommentId
+	newComment.Statu = 1
+	newComment.Content = param.Content
+	res := global.Db.Create(&newComment)
+	if res.RowsAffected == 0 {
+		return res.Error
+	}
 	return nil
 }

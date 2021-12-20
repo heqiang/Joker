@@ -148,7 +148,45 @@ func VoteArticle(c *gin.Context) {
 	utils.ResponseSuccess(c, utils.CodeSuccess)
 }
 
-// Comment
 func Comment(c *gin.Context) {
+	var commentArticle articletype.CommentArticleParam
+	var commentToComment articletype.CommentToCommentParam
+	level, err := strconv.Atoi(c.Param("level"))
+	if err != nil {
+		utils.ResponseErrorWithMsg(c, "请输入必输参数level", utils.CodeInvaildParam)
+		return
+	}
+	userid, _ := middlewares.GetCurrentUser(c)
+	// 对文章进行评论
+	if level == 1 {
+		if err := c.ShouldBindJSON(&commentArticle); err != nil {
+			controller.HandleValidtorError(c, err)
+			return
+		}
+		var art implements.Article
+		err := art.CommentArticle(commentArticle, userid)
+		if err != nil {
+			utils.ResponseError(c, utils.CodeServerBusy)
+			return
+		}
+		utils.ResponseSuccess(c, utils.CodeSuccess)
+		// 对评论进行评论
+	} else if level == 2 {
+		if err := c.ShouldBindJSON(&commentToComment); err != nil {
+			controller.HandleValidtorError(c, err)
+			return
+		}
+		var art implements.Article
+		err := art.CommentToComment(commentToComment, userid)
+		if err != nil {
+			utils.ResponseError(c, utils.CodeServerBusy)
+			return
+		}
+		utils.ResponseSuccess(c, utils.CodeSuccess)
+
+	} else {
+		utils.ResponseErrorWithMsg(c, "请输入必输参数level", utils.CodeInvaildParam)
+		return
+	}
 
 }

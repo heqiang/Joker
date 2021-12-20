@@ -11,4 +11,6 @@ type Article interface {
 	GetArticleByArticleId(articleId string) (model.Article, error)
 	GetAllArticle(page, size int) ([]model.Article, int, error)
 	VoteArticle(vote model.Vote, userId int64) error
+	CommentArticle(comment articletype.CommentArticleParam, userId int64) error
+	CommentToComment(comment articletype.CommentToCommentParam, userId int64) error
 }

@@ -49,3 +49,14 @@ type ArticlParam struct {
 	Title   string `json:"title" gorm:"column:title" comment:"文章标题" binding:"required" `
 	Content string `json:"content" gorm:"column:content;type:text" comment:"文章内容" binding:"required" `
 }
+
+type CommentArticleParam struct {
+	ArticleId int64  `json:"articleid" binging:"required"`
+	Content   string `json:"content" binging:"required"`
+}
+
+type CommentToCommentParam struct {
+	ArticleId       int64  `json:"articleid" binging:"required"`
+	Content         string `json:"content" binging:"required"`
+	ReplayCommentId int64  `json:"replaycommentid" binging:"required"`
+}

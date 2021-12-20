@@ -36,7 +36,7 @@ func main() {
 	}
 	defer zap.L().Sync()
 
-	//initlize.InitEs()
+	initlize.InitEs()
 	err = initlize.InitMysql(global.Conf.MysqlConfig)
 	if err != nil {
 		fmt.Println("mysql初始化错误")

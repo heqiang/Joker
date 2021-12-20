@@ -25,3 +25,13 @@ func (A *Article) GetAllArticle(page, size int) ([]model.Article, int, error) {
 func (A *Article) VoteArticle(vote model.Vote, userId int64) error {
 	return dao.VoteArticle(vote, userId)
 }
+
+func (A *Article) CommentArticle(comment articletype.CommentArticleParam, userId int64) error {
+	return dao.CommentArticle(comment, userId)
+}
+
+func (A *Article) CommentToComment(comment articletype.CommentToCommentParam, userId int64) error {
+
+	return dao.CommentToComment(comment, userId)
+
+}
