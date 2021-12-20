@@ -34,8 +34,9 @@ func main() {
 		fmt.Println("日志配置初始化错误")
 		return
 	}
-	initlize.InitEs()
 	defer zap.L().Sync()
+
+	//initlize.InitEs()
 	err = initlize.InitMysql(global.Conf.MysqlConfig)
 	if err != nil {
 		fmt.Println("mysql初始化错误")

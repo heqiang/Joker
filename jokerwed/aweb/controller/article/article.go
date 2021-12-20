@@ -147,3 +147,8 @@ func VoteArticle(c *gin.Context) {
 	}
 	utils.ResponseSuccess(c, utils.CodeSuccess)
 }
+
+// Comment
+func Comment(c *gin.Context) {
+
+}
