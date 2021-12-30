@@ -2,7 +2,10 @@ package initlize
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"github.com/olivere/elastic/v7"
+	"jokerweb/config"
 	"jokerweb/global"
 )
 
@@ -39,11 +42,12 @@ const JokerMapping = `
     }
 }`
 
-func InitEs() {
+func InitEs(conf *config.EsConfig) error {
 	ctx := context.Background()
-	client, err := elastic.NewClient(elastic.SetURL("http://127.0.0.1:9200"), elastic.SetSniff(false))
+	url := fmt.Sprintf("http://%s:%d", conf.Host, conf.Port)
+	client, err := elastic.NewClient(elastic.SetURL(url), elastic.SetSniff(false))
 	if err != nil {
-		panic(err)
+		return err
 	}
 	//检测 index是否存在
 	exist, err := client.IndexExists("joker").Do(ctx)
@@ -51,9 +55,9 @@ func InitEs() {
 		_, err := client.CreateIndex("joker").BodyString(JokerMapping).Do(ctx)
 		if err != nil {
 			panic(err)
-			return
+			return errors.New("es 创建错误")
 		}
 	}
 	global.Es = client
-
+	return nil
 }

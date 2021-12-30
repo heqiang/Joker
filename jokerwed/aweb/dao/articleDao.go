@@ -3,7 +3,6 @@ package dao
 import (
 	"context"
 	"errors"
-	"fmt"
 	"github.com/go-redis/redis/v8"
 	"gorm.io/gorm"
 	"jokerweb/aweb/controller/article/articletype"
@@ -29,11 +28,13 @@ func PostArticle(article model.Article) error {
 		Category:  article.Category,
 		UserId:    article.UserId,
 	}
-	a := &art
-	fmt.Println(a)
-	if res := global.Db.Create(&art); res.Error != nil {
-		return res.Error
+	tx := global.Db.Begin()
+	tx.Create(&art)
+	if tx.Error != nil {
+		tx.Rollback()
+		return tx.Error
 	}
+	tx.Commit()
 	return nil
 }
 func UpdateArticle(article articletype.Article) error {

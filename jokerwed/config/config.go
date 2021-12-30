@@ -1,13 +1,14 @@
 package config
 
 type AppConfig struct {
-	Name         string `mapstructure:"name"`
-	Mode         string `mapstructure:"mode"`
-	Version      string `mapstructure:"version"`
-	Port         int    `mapstructure:"port"`
-	*LogConfig   `mapstructure:"log"`
-	*MysqlConfig `mapstructure:"mysql"`
-	*RedisConfig `mapstructure:"redis"`
+	Name    string       `mapstructure:"name"`
+	Mode    string       `mapstructure:"mode"`
+	Version string       `mapstructure:"version"`
+	Port    int          `mapstructure:"port"`
+	Log     *LogConfig   `mapstructure:"log"`
+	Mysql   *MysqlConfig `mapstructure:"mysql"`
+	Redis   *RedisConfig `mapstructure:"redis"`
+	Es      *EsConfig    `mapstructure:"es"`
 }
 
 type LogConfig struct {
@@ -34,4 +35,8 @@ type RedisConfig struct {
 	Port     int    `mapstructure:"port"`
 	Db       int    `mapstructure:"db"`
 	PoolSize int    `mapstructure:"poolsize"`
+}
+type EsConfig struct {
+	Host string `mapstructure:"host"`
+	Port int    `mapstructure:"port"`
 }

@@ -29,15 +29,19 @@ func main() {
 		fmt.Println("初始化配置出错")
 		return
 	}
-	err = initlize.InitLogger(global.Conf.LogConfig, "warn")
+	err = initlize.InitLogger(global.Conf.Log, "warn")
 	if err != nil {
 		fmt.Println("日志配置初始化错误")
 		return
 	}
 	defer zap.L().Sync()
 
-	initlize.InitEs()
-	err = initlize.InitMysql(global.Conf.MysqlConfig)
+	err = initlize.InitEs(global.Conf.Es)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	err = initlize.InitMysql(global.Conf.Mysql)
 	if err != nil {
 		fmt.Println("mysql初始化错误")
 		return
@@ -46,7 +50,7 @@ func main() {
 		fmt.Println("翻译器初始化失败")
 		return
 	}
-	err = initlize.InitRedis(global.Conf.RedisConfig)
+	err = initlize.InitRedis(global.Conf.Redis)
 	if err != nil {
 		fmt.Println("redis初始化错误")
 		return
