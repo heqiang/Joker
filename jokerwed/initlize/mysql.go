@@ -23,9 +23,11 @@ func InitMysql(conf *config.MysqlConfig) (err error) {
 		Logger: logger.Default.LogMode(logger.Warn),
 	})
 	if err != nil {
+		fmt.Println(dsn)
 		fmt.Printf("数据库打开失败,err:%s", err)
 		panic(err)
 	}
+	fmt.Println("mysql:", dsn)
 	var article model.Article
 	var user model.User
 	var comment model.ArticleComment

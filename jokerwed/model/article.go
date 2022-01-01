@@ -16,7 +16,7 @@ type Article struct {
 	Content   string `json:"content" gorm:"column:content;type:text; comment:'文章内容'" binding:"required"`
 	PubTime   string `json:"pub_time" gorm:"column:pubtime;comment:'文章发布时间'"`
 	ClickNum  int    `json:"clicknum" gorm:"column:clicknum;default:0;comment:'文章点击量'" `
-	Category  string `json:"category" gorm:"column:category;default:'微段子'"`
+	Category  string `json:"category" gorm:"column:category"`
 	UserId    int64  `json:"user_id" gorm:"type:bigint;column:userid;comment:'用户id'"`
 	VoteNum   int    `json:"votenum" gorm:"type:int;column:votenum;default 0;comment:'文章点赞量'"`
 }

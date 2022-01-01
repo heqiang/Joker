@@ -6,7 +6,7 @@ services:
     image: redis:5.0.7
     ports:
       - "6379:6379"
-    container_name: myredis01
+
   mysql80:
     image: mysql:8.0.0
     ports:
@@ -15,13 +15,21 @@ services:
       MYSQL_ROOT_PASSWORD: 142212                #数据库初始话为root用户设置的默认密码
       MYSQL_DATABASE: jokeweb                #数据库名
       MYSQL_PASSWORD: 142212                   #自定义数据库的用户，权限只作用于MYSQL_DATABASE配置的数据库
+
   elastic7.8:
      image: 1422127065/es7.8.0
      ports:
        - "9200:9200"
        - "9300:9300"
-     networks:
-       - elastic
+  kibana7.8:
+    image: 1422127065/kibana7.8.0
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elastic7.8
+    environment:
+      monitoring.enabled: false
+
   jockerweb:
       build:
         context: .
@@ -29,12 +37,8 @@ services:
       ports:
         - "8081:8081"
       depends_on:
-        - elastic7.8
         - redis507
         - mysql80
-      networks:
-        - elastic
+        - elastic7.8
 
-networks:
-  elastic:
-    driver: bridge
+

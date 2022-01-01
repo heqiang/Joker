@@ -36,14 +36,14 @@ func main() {
 	}
 	defer zap.L().Sync()
 
-	err = initlize.InitEs(global.Conf.Es)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
 	err = initlize.InitMysql(global.Conf.Mysql)
 	if err != nil {
 		fmt.Println("mysql初始化错误")
+		return
+	}
+	err = initlize.InitEs(global.Conf.Es)
+	if err != nil {
+		fmt.Println("es:error", err.Error())
 		return
 	}
 	if err := controller2.InitTrans("zh"); err != nil {
@@ -52,7 +52,7 @@ func main() {
 	}
 	err = initlize.InitRedis(global.Conf.Redis)
 	if err != nil {
-		fmt.Println("redis初始化错误")
+		fmt.Println("redis初始化错误:", err)
 		return
 	}
 
